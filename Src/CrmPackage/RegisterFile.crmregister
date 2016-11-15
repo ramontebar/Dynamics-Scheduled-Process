@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Register xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/crm/2011/tools/pluginregistration">
+  <Solutions>
+    <Solution Assembly="DXTools.ScheduledProcess.Workflows.dll" Id="b87c6192-0fc4-46ab-b803-f4f6e6b55133" IsolationMode="Sandbox" SourceType="Database">
+      <WorkflowTypes>
+        <WorkflowType FriendlyName="Run Process" Name="RunProcess" Description="Execute a given process on the corresponding record(s) depending on the input parameters" WorkflowActivityGroupName="DXTools" Id="35edb5ae-e3b0-47df-b06a-4d7cb8de0a14" TypeName="DXTools.ScheduledProcess.Workflows.RunProcessActivity" />
+      </WorkflowTypes>
+    </Solution>
+  </Solutions>
+  <XamlWorkflows />
+</Register>
