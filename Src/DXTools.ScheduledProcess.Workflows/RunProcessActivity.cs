@@ -27,6 +27,9 @@ namespace DXTools.ScheduledProcess.Workflows
         [AttributeTarget("dxtools_scheduledprocess","dxtools_executeon")]
         public InArgument<OptionSetValue> ExecuteOn { get; set; }
 
+        [Input("Record ID")]
+        public InArgument<String> RecordID { get; set; }
+
         #endregion
 
         protected override void ExecuteActivity(CodeActivityContext executionContext)
@@ -52,20 +55,32 @@ namespace DXTools.ScheduledProcess.Workflows
             switch (executeOn)
             {
                 case ExecuteOnEnum.Global:
-                    ExecuteWorkflowRequest executeWorkflowRequest = new ExecuteWorkflowRequest();
-                    executeWorkflowRequest.WorkflowId = processid;
-                    executeWorkflowRequest.EntityId = this.WorkflowContext.PrimaryEntityId;
-                    ExecuteWorkflowResponse response = this.OrganizationService.Execute(executeWorkflowRequest) as ExecuteWorkflowResponse;
-                    if(response!=null)
-                        TraceService.Trace("Global Workflow has been executed correctly with ID: '{0}'.", response.Id);
-                    else
-                        TraceService.Trace("Global Workflow has been executed correctly but response is NULL.");
+                    ExecuteWorkflow(processid, this.WorkflowContext.PrimaryEntityId);
                     break;
                 case ExecuteOnEnum.SingleRecord:
-                    throw new NotImplementedException();
+                    Guid recordID = GetRecordID(executionContext);
+                    ExecuteWorkflow(processid, recordID);
+                    break;
                 case ExecuteOnEnum.Query:
                     throw new NotImplementedException();
             }           
+        }
+
+        private void ExecuteWorkflow(Guid processID, Guid recordID)
+        {
+            ExecuteWorkflowRequest executeWorkflowRequest = new ExecuteWorkflowRequest();
+            executeWorkflowRequest.WorkflowId = processID;
+            executeWorkflowRequest.EntityId = recordID;
+            ExecuteWorkflowResponse response = this.OrganizationService.Execute(executeWorkflowRequest) as ExecuteWorkflowResponse;
+            if (response != null)
+                TraceService.Trace("Global Workflow has been executed correctly with ID: '{0}'.", response.Id);
+            else
+                TraceService.Trace("Global Workflow has been executed correctly but response is NULL.");
+        }
+
+        private Guid GetRecordID(CodeActivityContext executionContext)
+        {
+            throw new NotImplementedException();
         }
 
         private ExecuteOnEnum GetExecuteOn(CodeActivityContext executionContext)
