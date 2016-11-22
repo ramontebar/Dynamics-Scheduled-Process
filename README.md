@@ -1,4 +1,4 @@
-# DXTools.ScheduledProcess
+# Dynamics Scheduled Process
 Microsoft Dynamics 365 utility to create scheduled processes. 
 
 This project is still an alpha version of the following
